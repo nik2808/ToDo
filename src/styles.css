@@ -1,0 +1,41 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+header {
+  font-size: 50px;
+  font-style: italic;
+  padding-bottom: 20px;
+}
+.Container1 {
+  padding: 10px;
+}
+.Container2 {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+input {
+  width: 60%;
+  border-color: rgb(135, 208, 250);
+}
+.btnSet {
+  padding-right: 5%;
+  padding-left: 5%;
+}
+.btn {
+  background-color: white;
+  border: 0;
+}
+li {
+  list-style: none;
+  text-align: left;
+}
+.edit {
+  background-color: rgb(0, 132, 255);
+  color: white;
+}
+.delete {
+  background-color: red;
+  color: white;
+}
