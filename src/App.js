@@ -1,49 +1,108 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./styles.css";
 
 export default function App() {
   const [count, setCount] = useState(0);
   const [list, setList] = useState([]);
-  const [value, setValue] = useState("");
+  const [valu, setValu] = useState("");
+  const [flag, setFlag] = useState({ f1: 0, f2: 0 });
+  const [aic, setAic] = useState(0);
+
+  const li =
+    list.length > 0 &&
+    list.map((item) =>
+      aic === 0 ||
+      (item.chck && aic === 2) ||
+      (item.chck === false && aic === 1) ? (
+        <li>
+          <input
+            id="items"
+            type="checkbox"
+            onChange={() => {
+              item.chck = item.chck === true ? false : true;
+            }}
+          />
+          {item.ky}
+          <button
+            className="edit li"
+            onClick={() => {
+              setValu(item.ky);
+              setFlag({ f1: 1, f2: item.id });
+            }}
+          >
+            edit{" "}
+          </button>
+          <button
+            className="delete li"
+            onClick={() =>
+              setList(list.filter((item2) => item2.id !== item.id))
+            }
+          >
+            delete{" "}
+          </button>
+        </li>
+      ) : (
+        ""
+      )
+    );
+
   function handle() {
-    if (value.length > 0) {
-      setList(list.concat([value]));
-      setValue("");
-      setCount(count + 1);
+    if (flag.f1 === 1) {
+      if (valu.length > 0) {
+        setList(
+          list.map((item) =>
+            item.id === flag.f2
+              ? { id: item.id, ky: valu, chck: item.chck }
+              : item
+          )
+        );
+      }
+    } else {
+      if (valu.length > 0) {
+        setCount(count + 1);
+        const li2 = list.concat({ id: count, ky: valu, chck: false });
+        setList(li2);
+      }
     }
+    setValu("");
   }
+
   return (
     <div className="App">
       <header> My ToDo List</header>
       <div className="Container1">
         Task Name
         <input
-          value={value}
+          id="inp"
+          value={valu}
           onChange={(e) => {
-            setValue(e.target.value);
+            setValu(e.target.value);
           }}
         />
         <button id="add" onClick={handle}>
-          Add{" "}
+          Add
         </button>
       </div>
       <div className="Container2">
-        {count} Tasks Pending!
+        {list.filter((item) => item.chck !== true).length} Tasks Pending!
         <div className="btnSet">
-          <button className="btn">All </button>
-          <button className="btn">Incomplete </button>
-          <button className="btn">Complete </button>
+          <button className="btn" onClick={() => setAic(0)}>
+            All{" "}
+          </button>
+          <button className="btn" onClick={() => setAic(1)}>
+            Incomplete{" "}
+          </button>
+          <button className="btn" onClick={() => setAic(2)}>
+            Complete{" "}
+          </button>
         </div>
-        <button>Clear Completed </button>
+        <button
+          onClick={() => setList(list.filter((item) => item.chck !== true))}
+        >
+          Clear Completed{" "}
+        </button>
       </div>
-      {list.map((item) => (
-        <li>
-          <input type="checkbox" value={item} />
-          {item}
-          <button className="edit li">edit </button>
-          <button className="delete li">delete </button>
-        </li>
-      ))}
+      <div className="list">{li}</div>
     </div>
   );
 }
